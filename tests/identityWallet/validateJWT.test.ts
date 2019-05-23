@@ -53,12 +53,8 @@ describe('IdentityWallet validate JWT', () => {
     sandbox.restore()
   })
 
-  it('Should sucessfully perform necessary validation steps on received jwt', async () => {
-    try {
-      await iw.validateJWT(JSONWebToken.fromJSON(validSignedCredReqJWT))
-    } catch (err) {
-      expect(false).to.be.true
-    }
+  it('Should sucessfully perform necessary validation steps on received jwt', done => {
+    iw.validateJWT(JSONWebToken.fromJSON(validSignedCredReqJWT)).then(done, done)
   })
 
   it('Should throw error on invalid signature', async () => {
@@ -71,7 +67,7 @@ describe('IdentityWallet validate JWT', () => {
     }
   })
 
-  it('Should thow error on invalid nonce', async () => {
+  it('Should throw error on invalid nonce', async () => {
     validSignedCredReqJWT.payload.jti = invalidNonce
     try {
       await iw.validateJWT(

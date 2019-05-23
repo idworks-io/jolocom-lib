@@ -8,6 +8,7 @@ import {
   IConstraint,
   Operator,
 } from './interactionTokens.types'
+import { IJWTEncodable, registerJWTEncodable, InteractionType } from './types';
 import { ISignedCredentialAttrs } from '../credentials/signedCredential/types'
 
 /**
@@ -16,7 +17,8 @@ import { ISignedCredentialAttrs } from '../credentials/signedCredential/types'
  */
 
 @Exclude()
-export class CredentialRequest {
+@registerJWTEncodable(InteractionType.CredentialRequest)
+export class CredentialRequest implements IJWTEncodable {
   private _callbackURL: string
   private _credentialRequirements: ICredentialRequest[] = []
 

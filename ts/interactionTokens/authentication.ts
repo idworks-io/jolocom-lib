@@ -1,4 +1,5 @@
 import { plainToClass, classToPlain, Expose, Exclude } from 'class-transformer'
+import { IJWTEncodable, registerJWTEncodable, InteractionType } from './types';
 import { IAuthenticationAttrs } from './interactionTokens.types'
 
 /**
@@ -9,7 +10,8 @@ import { IAuthenticationAttrs } from './interactionTokens.types'
  */
 
 @Exclude()
-export class Authentication {
+@registerJWTEncodable(InteractionType.Authentication)
+export class Authentication implements IJWTEncodable {
   private _callbackURL: string
   private _description: string
 

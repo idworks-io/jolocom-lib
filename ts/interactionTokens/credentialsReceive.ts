@@ -5,6 +5,7 @@ import {
   Expose,
   Exclude,
 } from 'class-transformer'
+import { IJWTEncodable, registerJWTEncodable, InteractionType } from './types';
 import { SignedCredential } from '../credentials/signedCredential/signedCredential'
 import { ICredentialsReceiveAttrs } from './interactionTokens.types'
 
@@ -16,7 +17,8 @@ import { ICredentialsReceiveAttrs } from './interactionTokens.types'
  */
 
 @Exclude()
-export class CredentialsReceive {
+@registerJWTEncodable(InteractionType.CredentialsReceive)
+export class CredentialsReceive implements IJWTEncodable {
   private _signedCredentials: SignedCredential[]
 
   /**

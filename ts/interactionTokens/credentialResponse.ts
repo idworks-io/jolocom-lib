@@ -5,6 +5,7 @@ import {
   Type,
   Exclude,
 } from 'class-transformer'
+import { IJWTEncodable, registerJWTEncodable, InteractionType } from './types';
 import { ICredentialResponseAttrs } from './interactionTokens.types'
 import { SignedCredential } from '../credentials/signedCredential/signedCredential'
 import { CredentialRequest } from './credentialRequest'
@@ -14,7 +15,8 @@ import { CredentialRequest } from './credentialRequest'
  * Class representing a credential response. encodable as a JWT
  */
 @Exclude()
-export class CredentialResponse {
+@registerJWTEncodable(InteractionType.CredentialResponse)
+export class CredentialResponse implements IJWTEncodable {
   private _callbackURL: string
   private _suppliedCredentials: SignedCredential[]
 

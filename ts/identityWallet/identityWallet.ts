@@ -13,8 +13,8 @@ import {
   PublicKeyMap,
 } from './types'
 import { Identity } from '../identity/identity'
-import { JSONWebToken, JWTEncodable } from '../interactionTokens/JSONWebToken'
-import { InteractionType } from '../interactionTokens/types'
+import { JSONWebToken } from '../interactionTokens/JSONWebToken'
+import { InteractionType, IJWTEncodable } from '../interactionTokens/types'
 import { CredentialOffer } from '../interactionTokens/credentialOffer'
 import { PaymentResponse } from '../interactionTokens/paymentResponse'
 import { PaymentRequest } from '../interactionTokens/paymentRequest'
@@ -224,7 +224,7 @@ export class IdentityWallet {
   private createAuth = async (
     authArgs: AuthCreationArgs,
     pass: string,
-    receivedJWT?: JSONWebToken<JWTEncodable>,
+    receivedJWT?: JSONWebToken<IJWTEncodable>,
   ) => {
     const authenticationReq = Authentication.fromJSON({
       description: 'Authorize the transaction',
@@ -251,7 +251,7 @@ export class IdentityWallet {
   private createCredOffer = async (
     credOffer: CredentialOfferRequestCreationArgs,
     pass: string,
-    receivedJWT?: JSONWebToken<JWTEncodable>,
+    receivedJWT?: JSONWebToken<IJWTEncodable>,
   ) => {
     const offer = CredentialOffer.fromJSON(credOffer)
     const jwt = JSONWebToken.fromJWTEncodable(offer)
@@ -294,7 +294,7 @@ export class IdentityWallet {
   private createCredResp = async (
     credResp: CredentialShareResponseCreationArgs,
     pass: string,
-    receivedJWT: JSONWebToken<JWTEncodable>,
+    receivedJWT: JSONWebToken<IJWTEncodable>,
   ) => {
     const credentialResponse = CredentialResponse.fromJSON(credResp)
     const jwt = JSONWebToken.fromJWTEncodable(credentialResponse)
@@ -317,7 +317,7 @@ export class IdentityWallet {
   private createCredReceive = async (
     credReceive: CredentialOfferResponseCreationArgs,
     pass: string,
-    receivedJWT: JSONWebToken<JWTEncodable>,
+    receivedJWT: JSONWebToken<IJWTEncodable>,
   ) => {
     const credentialReceieve = CredentialsReceive.fromJSON(credReceive)
     const jwt = JSONWebToken.fromJWTEncodable(credentialReceieve)
@@ -401,7 +401,7 @@ export class IdentityWallet {
   private createPaymentResp = async (
     paymentResp: PaymentResponseCreationArgs,
     pass: string,
-    receivedJWT: JSONWebToken<JWTEncodable>,
+    receivedJWT: JSONWebToken<IJWTEncodable>,
   ) => {
     const paymentResponse = PaymentResponse.fromJSON(
       paymentResp,
@@ -424,7 +424,7 @@ export class IdentityWallet {
    * @param receivedJWT - optional received JSONWebToken Class
    */
 
-  private async initializeAndSign<T extends JWTEncodable>(
+  private async initializeAndSign<T extends IJWTEncodable>(
     jwt: JSONWebToken<T>,
     derivationPath: string,
     pass: string,
@@ -454,7 +454,7 @@ export class IdentityWallet {
    * @param customRegistry - optional custom registry
    */
 
-  public async validateJWT<T extends JWTEncodable, A extends JWTEncodable>(
+  public async validateJWT<T extends IJWTEncodable, A extends IJWTEncodable>(
     receivedJWT: JSONWebToken<T>,
     sendJWT?: JSONWebToken<A>,
     customRegistry?: IRegistry,

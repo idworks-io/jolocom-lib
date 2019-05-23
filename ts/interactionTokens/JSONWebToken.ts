@@ -5,35 +5,34 @@ import {
   plainToClass,
   Expose,
   Transform,
-  Exclude,
+  Exclude
 } from 'class-transformer'
-import { IJWTHeader } from './types'
-import { IJSONWebTokenAttrs, InteractionType } from './types'
 import { sha256 } from '../utils/crypto'
+import { handleValidationStatus, keyIdToDid } from '../utils/helper'
 import { IDigestable } from '../linkedDataSignature/types'
+import { IJWTHeader, IJWTEncodable, InteractionTypeClassMap } from './types'
+import { IJSONWebTokenAttrs, InteractionType } from './types'
+
 import { CredentialOffer } from './credentialOffer'
-import { CredentialResponse } from './credentialResponse'
 import { CredentialRequest } from './credentialRequest'
 import { Authentication } from './authentication'
+import { CredentialResponse } from './credentialResponse'
 import { CredentialsReceive } from './credentialsReceive'
-import { handleValidationStatus, keyIdToDid } from '../utils/helper'
 import { PaymentResponse } from './paymentResponse'
 import { PaymentRequest } from './paymentRequest'
 
-/* Local interfaces / types to save on typing later */
+//export type JWTEncodable =
+//  | CredentialResponse
+//  | CredentialRequest
+//  | Authentication
+//  | CredentialOffer
+//  | CredentialsReceive
+//  | PaymentRequest
+//  | PaymentResponse
 
-export type JWTEncodable =
-  | CredentialResponse
-  | CredentialRequest
-  | Authentication
-  | CredentialOffer
-  | CredentialsReceive
-  | PaymentRequest
-  | PaymentResponse
-
-interface IJWTEncodable {
-  [key: string]: any
-}
+//interface IJWTEncodable {
+//  [key: string]: any
+//}
 
 interface IPayloadSection<T> {
   iat?: number
@@ -55,15 +54,15 @@ interface TransformArgs {
   aud: string
 }
 
-const convertPayload = <T extends JWTEncodable>(args: TransformArgs) => ({
+const convertPayload = <T extends IJWTEncodable>(args: TransformArgs) => ({
   ...args,
-  interactionToken: payloadToJWT<T>(args.interactionToken, args.typ),
+  interactionToken: plainToClass(InteractionTypeClassMap[args.typ], args.interactionToken)
 })
 
 /* Generic class encoding and decodes various interaction tokens as and from JSON web tokens */
 
 @Exclude()
-export class JSONWebToken<T extends JWTEncodable> implements IDigestable {
+export class JSONWebToken<T extends IJWTEncodable> implements IDigestable {
   /* ES256K stands for ec signatures on secp256k1, de facto standard */
   private _header: IJWTHeader = {
     typ: 'JWT',
@@ -78,7 +77,7 @@ export class JSONWebToken<T extends JWTEncodable> implements IDigestable {
    */
 
   @Expose()
-  @Transform(value => convertPayload(value), { toClassOnly: true })
+  @Transform(convertPayload, { toClassOnly: true })
   get payload() {
     return this._payload
   }
@@ -167,7 +166,7 @@ export class JSONWebToken<T extends JWTEncodable> implements IDigestable {
    * @returns {Object} - A json web token instance
    */
 
-  public static fromJWTEncodable<T extends JWTEncodable>(
+  public static fromJWTEncodable<T extends IJWTEncodable>(
     toEncode: T,
   ): JSONWebToken<T> {
     const jwt = new JSONWebToken<T>()
@@ -191,7 +190,7 @@ export class JSONWebToken<T extends JWTEncodable> implements IDigestable {
    * @returns {Object} - Instance of JSONWebToken class
    */
 
-  public static decode<T extends JWTEncodable>(jwt: string): JSONWebToken<T> {
+  public static decode<T extends IJWTEncodable>(jwt: string): JSONWebToken<T> {
     const interactionToken = JSONWebToken.fromJSON(decodeToken(jwt))
     handleValidationStatus(interactionToken.expires > Date.now(), 'exp')
 
@@ -235,7 +234,7 @@ export class JSONWebToken<T extends JWTEncodable> implements IDigestable {
     return classToPlain(this) as IJSONWebTokenAttrs
   }
 
-  public static fromJSON<T extends JWTEncodable>(
+  public static fromJSON<T extends IJWTEncodable>(
     json: IJSONWebTokenAttrs,
   ): JSONWebToken<T> {
     return plainToClass<JSONWebToken<T>, IJSONWebTokenAttrs>(JSONWebToken, json)
@@ -249,15 +248,6 @@ export class JSONWebToken<T extends JWTEncodable> implements IDigestable {
  * @returns {Object} - Instantiated class based on the payload and the InteractionType typ
  */
 
-const payloadToJWT = <T extends JWTEncodable>(
-  payload: IJWTEncodable,
-  typ: InteractionType,
-): T => {
-  return instantiateInteraction(typ, c =>
-    plainToClass<T, IJWTEncodable>(c, payload),
-  )
-}
-
 /*
  * @description - Instantiates a specific interaction class based on a key in the received JSON
  * the instantiator cannot be typed right now because 'typeof T' can't be used as a type
@@ -266,7 +256,7 @@ const payloadToJWT = <T extends JWTEncodable>(
  * @returns {Object} - Instantiated class based on interactionType typ
  */
 
-const instantiateInteraction = <T extends JWTEncodable>(
+const instantiateInteraction = <T extends IJWTEncodable>(
   typ: InteractionType,
   instantiator: (t) => T,
 ) => {

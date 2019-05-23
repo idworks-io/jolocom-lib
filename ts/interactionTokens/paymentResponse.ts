@@ -1,4 +1,5 @@
 import { classToPlain, plainToClass, Expose, Exclude } from 'class-transformer'
+import { IJWTEncodable, registerJWTEncodable, InteractionType } from './types';
 import { IPaymentResponseAttrs } from './interactionTokens.types'
 
 /**
@@ -7,7 +8,8 @@ import { IPaymentResponseAttrs } from './interactionTokens.types'
  */
 
 @Exclude()
-export class PaymentResponse {
+@registerJWTEncodable(InteractionType.PaymentResponse)
+export class PaymentResponse implements IJWTEncodable {
   private _txHash: string
 
   @Expose()

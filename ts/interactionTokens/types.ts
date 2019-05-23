@@ -1,3 +1,7 @@
+import {
+  ClassType
+} from 'class-transformer/ClassTransformer.d'
+
 export interface IJWTHeader {
   alg: string
   typ: string
@@ -21,6 +25,8 @@ interface IJWTHeaderAttrs {
   typ: string
 }
 
+export interface IJWTEncodable { }
+
 export enum InteractionType {
   CredentialRequest = 'credentialRequest',
   CredentialResponse = 'credentialResponse',
@@ -29,4 +35,12 @@ export enum InteractionType {
   CredentialOffer = 'credentialOffer',
   PaymentRequest = 'paymentRequest',
   PaymentResponse = 'paymentResponse',
+}
+
+export const InteractionTypeClassMap: {[key in InteractionType]?: ClassType<IJWTEncodable> } = { }
+
+export function registerJWTEncodable(interactionType: InteractionType) {
+  return function(constructor: ClassType<IJWTEncodable>) {
+    InteractionTypeClassMap[interactionType] = constructor
+  }
 }

@@ -1,4 +1,5 @@
 import { classToPlain, plainToClass, Expose, Exclude } from 'class-transformer'
+import { IJWTEncodable, registerJWTEncodable, InteractionType } from './types';
 import { IPaymentRequestAttrs } from './interactionTokens.types'
 import { ITransactionEncodable, TransactionOptions } from '../contracts/types'
 
@@ -8,7 +9,8 @@ import { ITransactionEncodable, TransactionOptions } from '../contracts/types'
  */
 
 @Exclude()
-export class PaymentRequest implements ITransactionEncodable {
+@registerJWTEncodable(InteractionType.PaymentRequest)
+export class PaymentRequest implements IJWTEncodable, ITransactionEncodable {
   private _callbackURL: string
   private _transactionOptions: TransactionOptions
   private _description: string
