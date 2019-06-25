@@ -41,6 +41,7 @@ interface IPayloadSection<T> {
   jti?: string
   iss?: string
   aud?: string
+  version?: number
   typ?: InteractionType
   interactionToken?: T
 }
@@ -143,6 +144,14 @@ export class JSONWebToken<T extends JWTEncodable> implements IDigestable {
 
   set interactionType(type) {
     this.payload.typ = type
+  }
+
+  get version() {
+    return this.payload.version
+  }
+
+  set version(version: number) {
+    this.payload.version = version
   }
 
   @Expose()
