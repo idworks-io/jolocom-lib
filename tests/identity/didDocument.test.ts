@@ -41,9 +41,7 @@ describe('DidDocument', () => {
   })
 
   beforeEach(async () => {
-    referenceDidDocument = await DidDocument.fromPublicKey(
-      testPublicIdentityKey,
-    )
+    referenceDidDocument = DidDocument.fromPublicKey(testPublicIdentityKey)
     referenceDidDocument.addAuthKey(mockPublicKey2)
     referenceDidDocument.addServiceEndpoint(
       ServiceEndpointsSection.fromJSON(mockPubProfServiceEndpointJSON),

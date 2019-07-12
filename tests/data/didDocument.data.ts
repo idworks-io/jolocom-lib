@@ -74,7 +74,11 @@ export const didDocumentJSONv0 = {
       proofAlgorithm: 'sec:proofAlgorithm',
       proofType: 'sec:proofType',
       proofValue: 'sec:proofValue',
-      publicKey: { '@id': 'sec:publicKey', '@type': '@id', '@container': '@set' },
+      publicKey: {
+        '@id': 'sec:publicKey',
+        '@type': '@id',
+        '@container': '@set',
+      },
       publicKeyHex: 'sec:publicKeyHex',
       requiredProof: 'sec:requiredProof',
       revoked: { '@id': 'sec:revoked', '@type': 'xsd:dateTime' },

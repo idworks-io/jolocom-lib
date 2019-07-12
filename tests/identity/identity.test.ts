@@ -9,7 +9,7 @@ const expect = chai.expect
 
 describe('Identity', async () => {
   let clock
-  const mockDidDocument = await DidDocument.fromPublicKey(testPublicIdentityKey)
+  const mockDidDocument = DidDocument.fromPublicKey(testPublicIdentityKey)
   const mockPublicProfile = SignedCredential.fromJSON(publicProfileCredJSON)
 
   before(() => {

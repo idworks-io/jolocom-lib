@@ -324,7 +324,7 @@ export class DidDocument implements IDigestible {
    * @example `const didDocument = DidDocument.fromPublicKey(Buffer.from('abc...ffe', 'hex'))`
    */
 
-  public static async fromPublicKey(publicKey: Buffer): Promise<DidDocument> {
+  public static fromPublicKey(publicKey: Buffer): DidDocument {
     const did = publicKeyToDID(publicKey)
     const keyId = `${did}#keys-1`
 
@@ -368,7 +368,11 @@ export class DidDocument implements IDigestible {
    */
 
   public async digest(): Promise<Buffer> {
-    // @ts-ignore TODO check if it has proof section
+    if (!this.proof)
+      throw new Error(
+        'proof section has to be initialized before calling `digest()`',
+      )
+    // @ts-ignore
     return await new Digestible(this.toJSON()).digest()
   }
 
