@@ -7,12 +7,11 @@ import {
   Exclude,
   Transform,
 } from 'class-transformer'
-import { canonize } from 'jsonld'
-import { generateRandomID, sha256 } from '../../utils/crypto'
+import { generateRandomID } from '../../utils/crypto'
 import { ISignedCredentialAttrs, ISignedCredCreationArgs } from './types'
 import {
   ILinkedDataSignature,
-  IDigestable,
+  IDigestible,
 } from '../../linkedDataSignature/types'
 import { ContextEntry, BaseMetadata } from 'cred-types-jolocom-core'
 import { IClaimSection } from '../credential/types'
@@ -20,6 +19,7 @@ import { EcdsaLinkedDataSignature } from '../../linkedDataSignature'
 import { ISigner } from '../../registries/types'
 import { Credential } from '../credential/credential'
 import { SoftwareKeyProvider } from '../../vaultedKeyProvider/softwareProvider'
+import { Digestible } from '../../linkedDataSignature/suites/digestible'
 
 /**
  * @description Data needed to prepare signature on credential
@@ -38,7 +38,7 @@ interface IIssInfo {
  */
 
 @Exclude()
-export class SignedCredential implements IDigestable {
+export class SignedCredential implements IDigestible {
   private '_@context': ContextEntry[]
   private _id: string = generateClaimId(8)
   private _name: string
@@ -344,25 +344,7 @@ export class SignedCredential implements IDigestable {
    */
 
   public async digest(): Promise<Buffer> {
-    const normalized = await this.normalize()
-
-    const docSectionDigest = sha256(Buffer.from(normalized))
-    const proofSectionDigest = await this.proof.digest()
-
-    return sha256(Buffer.concat([proofSectionDigest, docSectionDigest]))
-  }
-
-  /**
-   * Converts the verifiable credential to canonical form
-   * @see {@link https://w3c-dvcg.github.io/ld-signatures/#dfn-canonicalization-algorithm | Canonicalization algorithm }
-   * @internal
-   */
-
-  private async normalize(): Promise<string> {
-    const json = this.toJSON()
-    delete json.proof
-
-    return canonize(json)
+    return await new Digestible(this.toJSON()).digest()
   }
 
   /**

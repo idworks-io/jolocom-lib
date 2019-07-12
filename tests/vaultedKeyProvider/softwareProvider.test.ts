@@ -21,11 +21,9 @@ import {
   credentialDigest,
   corruptedSignedCredentialJSON,
 } from '../data/keyProvider.data'
-import { IDigestable } from '../../ts/linkedDataSignature/types'
+import { IDigestible } from '../../ts/linkedDataSignature/types'
 import { publicProfileCredJSON, emailCredential } from '../data/identity.data'
 import { keyDerivationArgs } from '../data/identityWallet.data'
-import { JolocomLib } from '../../ts/index'
-import { claimsMetadata } from 'cred-types-jolocom-core'
 
 chai.use(sinonChai)
 describe('Software Vaulted Key Provider', () => {
@@ -170,7 +168,7 @@ describe('Software Vaulted Key Provider', () => {
 
     it('Should fail to compute signature if object or key data is invalid', async () => {
       try {
-        await vault.signDigestable(keyDerivationArgs, {} as IDigestable)
+        await vault.signDigestable(keyDerivationArgs, {} as IDigestible)
         expect(false).to.be.true
       } catch (err) {
         expect(err.message).to.eq('toSign.digest is not a function')

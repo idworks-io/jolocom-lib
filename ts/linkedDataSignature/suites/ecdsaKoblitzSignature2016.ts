@@ -1,6 +1,5 @@
 import 'reflect-metadata'
 import {
-  Type,
   plainToClass,
   classToPlain,
   Exclude,
@@ -11,7 +10,7 @@ import { canonize } from 'jsonld'
 import {
   ILinkedDataSignature,
   ILinkedDataSignatureAttrs,
-  IDigestable,
+  IDigestible,
 } from '../types'
 import { sha256 } from '../../utils/crypto'
 import { defaultContext } from '../../utils/contexts'
@@ -20,13 +19,13 @@ import { keyIdToDid } from '../../utils/helper'
 /**
  * @class A EcdsaKoblitz linked data signature implementation
  * @implements {ILinkedDataSignature}
- * @implements {IDigestable}
+ * @implements {IDigestible}
  * @internal
  */
 
 @Exclude()
 export class EcdsaLinkedDataSignature
-  implements ILinkedDataSignature, IDigestable {
+  implements ILinkedDataSignature, IDigestible {
   private _type = 'EcdsaKoblitzSignature2016'
   private _creator: string = ''
   private _created: Date = new Date()

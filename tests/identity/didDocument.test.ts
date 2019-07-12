@@ -7,7 +7,6 @@ import {
   didDocumentJSON,
   mockDid,
   mockKeyId,
-  normalizedDidDocument,
 } from '../data/didDocument.data'
 import { DidDocument } from '../../ts/identity/didDocument/didDocument'
 import {
@@ -81,10 +80,12 @@ describe('DidDocument', () => {
     expect(() => DidDocument.fromJSON(didDocJSON)).to.not.throw()
   })
 
-  it('Should correctly implement fromJSON for version 0', () => {
+  it('Should correctly implement fromJSON for version 0', async () => {
     const didDocumentv0 = DidDocument.fromJSON(didDocumentJSONv0)
 
     didDocumentv0.addAuthKey(mockPublicKey2 as PublicKeySection)
+    // update signature of the migrated DID Document
+    await didDocumentv0.sign(vault, derivationArgs, mockKeyId)
     expect(didDocumentv0).to.deep.eq(referenceDidDocument)
   })
 
@@ -95,12 +96,6 @@ describe('DidDocument', () => {
 
   it('Should correctly implement toJSON', () => {
     expect(referenceDidDocument.toJSON()).to.deep.eq(didDocumentJSON)
-  })
-
-  it('Should correctly implement normalize', async () => {
-    const normalized = await referenceDidDocument.normalize()
-
-    expect(normalized).to.deep.eq(normalizedDidDocument)
   })
 
   it('should correctly sign the DID document', async () => {
