@@ -1,24 +1,14 @@
-import 'reflect-metadata'
-import { parse } from './parse/parse'
-import { registries } from './registries'
-import { SoftwareKeyProvider } from './vaultedKeyProvider/softwareProvider'
-import { KeyTypes } from './vaultedKeyProvider/types'
-import { constraintFunctions } from './interactionTokens/credentialRequest'
-import { fuelKeyWithEther, getIssuerPublicKey } from './utils/helper'
-import { validateDigestable, validateDigestables } from './utils/validation'
-
-export const JolocomLib = {
-  parse,
-  registries,
-  KeyProvider: SoftwareKeyProvider,
-  util: {
-    constraintFunctions,
-    fuelKeyWithEther,
-    getIssuerPublicKey,
-    validateDigestable,
-    validateDigestables,
-  },
-  KeyTypes,
-}
-
-export { claimsMetadata } from 'cred-types-jolocom-core'
+export * from "./contracts/index"
+export * from "./credentials/index"
+export * from "./ethereum/index"
+export * from "./identity/index"
+export * from "./identityWallet/index"
+export * from "./interactionTokens/index"
+export * from "./ipfs/index"
+export * from "./linkedDataSignature/index"
+export * from "./parse/index"
+export * from "./registries/index"
+export * from "./sso/index"
+export * from "./utils/index"
+export * from "./vaultedKeyProvider/index"
+export * from "./jolocomLib"

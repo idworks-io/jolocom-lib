@@ -1,1 +1,2 @@
-export { EcdsaLinkedDataSignature } from './suites/ecdsaKoblitzSignature2016'
+export * from "./types"
+export * from "./suites/index"

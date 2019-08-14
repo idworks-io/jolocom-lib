@@ -7,3 +7,6 @@ export const registries = {
     create: createJolocomRegistry,
   },
 }
+
+export * from "./jolocomRegistry"
+export * from "./types"

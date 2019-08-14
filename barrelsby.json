@@ -1,0 +1,13 @@
+{
+    "directory": "ts",
+    "delete": true,
+    "location": "all",
+    "name": "index",
+    "structure": "flat",
+    "verbose": true,
+    "noSemicolon": true,
+    "include": [
+        ".ts$"
+    ],
+    "exclude": []
+}
