@@ -1959,11 +1959,6 @@ create-hmac@^1.1.0, create-hmac@^1.1.2, create-hmac@^1.1.4, create-hmac@^1.1.7:
     safe-buffer "^5.0.1"
     sha.js "^2.4.8"
 
-cred-types-jolocom-core@^0.0.11:
-  version "0.0.11"
-  resolved "https://registry.yarnpkg.com/cred-types-jolocom-core/-/cred-types-jolocom-core-0.0.11.tgz#7cc8c23e511590fede0f9a072854f3892127e0ed"
-  integrity sha512-jnLdSo45XvMhPmecAve41GhYPRUqTIumCyjBa4rpUsTCsLSKR1LHq6XC0C9B0RKyk4S7/DZHjGc9q/WdkjVNCg==
-
 cross-fetch@^2.1.0, cross-fetch@^2.1.1:
   version "2.2.3"
   resolved "https://registry.yarnpkg.com/cross-fetch/-/cross-fetch-2.2.3.tgz#e8a0b3c54598136e037f8650f8e823ccdfac198e"
@@ -3847,6 +3842,12 @@ iconv-lite@^0.4.24, iconv-lite@~0.4.13:
   integrity sha512-v3MXnZAcvnywkTUEZomIActle7RXXeedOR31wwl7VlyoXO4Qi9arvSenNQWne1TcRwhCL1HwLI21bEqdpj8/rA==
   dependencies:
     safer-buffer ">= 2.1.2 < 3"
+
+"idworks-credential-definitions@git+ssh://git@bitbucket.org:identityworks/idworks-credential-definitions.git":
+  version "0.0.1"
+  resolved "git+ssh://git@bitbucket.org:identityworks/idworks-credential-definitions.git#b9e98a65f8eeaef8435399b7208509edf1c3d8ae"
+  dependencies:
+    typescript "^3.5.3"
 
 ieee754@^1.1.4, ieee754@^1.1.8:
   version "1.1.12"
@@ -7886,6 +7887,11 @@ typescript@^3.4.1:
   version "3.4.1"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.4.1.tgz#b6691be11a881ffa9a05765a205cb7383f3b63c6"
   integrity sha512-3NSMb2VzDQm8oBTLH6Nj55VVtUEpe/rgkIzMir0qVoLyjDZlnMBva0U6vDiV3IH+sl/Yu6oP5QwsAQtHPmDd2Q==
+
+typescript@^3.5.3:
+  version "3.5.3"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.5.3.tgz#c830f657f93f1ea846819e929092f5fe5983e977"
+  integrity sha512-ACzBtm/PhXBDId6a6sDJfroT2pOWt/oOnk4/dElG5G33ZL776N3Y6/6bKZJBFpd+b05F3Ct9qDjMeJmRWtE2/g==
 
 typewise-core@^1.2, typewise-core@^1.2.0:
   version "1.2.0"
